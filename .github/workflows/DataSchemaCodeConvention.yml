@@ -1,31 +1,28 @@
 name: Data Schema Code Convention Check
 
-# Запускати при push в основну гілку або вручну
+
 on:
   push:
-    branches: [ main, master ] # Змініть на вашу основну гілку
-  workflow_dispatch:
+    branches: [ LW4 ] 
+  workflow_dispatch: 
 
 jobs:
   check-sql-convention:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install SQL Linter (Sqlfluff)
-      
+      - name: Checkout Code
+        uses: actions/checkout@v4 
+      - name: Setup Python Environment
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
-          
-      - name: Install Sqlfluff
+          python-version: '3.x'  
+      - name: Install SQL Linter (Sqlfluff)
         run: pip install sqlfluff
-        
-      - name: Run Code Convention Check (DataSchema.sql)
-        
+      - name: Run Code Convention Check on DataSchema.sql
         run: |
-          echo "Starting SQL Code Convention Check..."
-         
-          sqlfluff lint DataSchema.sql --dialect postgres --format github || true 
-        
+          echo "Starting Code Convention Check on DataSchema.sql..."
+          sqlfluff lint DataSchema.sql --dialect postgres --format github || true
+      - name: Run Code Convention Check on DataSchemaModified.sql
+        run: |
+          echo "Starting Code Convention Check on DataSchemaModified.sql..."
+          sqlfluff lint DataSchemaModified.sql --dialect postgres --format github || true
