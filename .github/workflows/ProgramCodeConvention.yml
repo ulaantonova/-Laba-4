@@ -1,0 +1,37 @@
+name: Program Code Convention Check (Java)
+
+on:
+  push:
+    branches: [ LW4 ] 
+  workflow_dispatch:
+
+jobs:
+  lint-java-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java Environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          
+      - name: Run Checkstyle for ProgramCode.java
+        uses: reviewdog/action-checkstyle@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          checkstyle_config: sun_checks.xml
+          fail_on_error: true
+          files: 'ProgramCode.java'
+          
+      - name: Run Checkstyle for ProgramCodeModified.java
+        uses: reviewdog/action-checkstyle@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          checkstyle_config: sun_checks.xml
+          fail_on_error: true
+          files: 'ProgramCodeModified.java'
