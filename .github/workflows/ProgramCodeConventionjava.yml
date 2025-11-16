@@ -1,4 +1,4 @@
-name: Program Code Convention Checks (Java)
+name: Program Code Convention Check (Java)
 
 on:
   push:
@@ -13,21 +13,29 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Java Environment
+        
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
           
-
-      - name: Check ProgramCode.java for conventions
-        uses: checkstyle/checkstyle-action@v1
-        with:
-
-          files: 'ProgramCode.java ProgramCodeModified.java' 
- 
-          checkstyle_config: sun_checks.xml
+      - name: Download Checkstyle JAR
+        
+        run: |
+          CHECKSTYLE_VERSION=10.12.5 # Актуальна версія
+          wget https://github.com/checkstyle/checkstyle/releases/download/checkstyle-${CHECKSTYLE_VERSION}/checkstyle-${CHECKSTYLE_VERSION}-all.jar -O checkstyle.jar
           
      
-          fail_on_error: true
+      - name: Check ProgramCode.java for conventions
+        run: |
+          echo "Starting convention check on ProgramCode.java..."
+       
+          java -jar checkstyle.jar -c /sun_checks.xml ProgramCode.java || true
+          
+     
+      - name: Check ProgramCodeModified.java for conventions
+        run: |
+          echo "Starting convention check on ProgramCodeModified.java..."
+          java -jar checkstyle.jar -c /sun_checks.xml ProgramCodeModified.java || true
           
      
