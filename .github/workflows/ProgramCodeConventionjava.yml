@@ -1,0 +1,33 @@
+name: Program Code Convention Checks (Java)
+
+on:
+  push:
+    branches: [ LW4 ] 
+  workflow_dispatch:
+
+jobs:
+  lint-java-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java Environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          
+
+      - name: Check ProgramCode.java for conventions
+        uses: checkstyle/checkstyle-action@v1
+        with:
+
+          files: 'ProgramCode.java ProgramCodeModified.java' 
+ 
+          checkstyle_config: sun_checks.xml
+          
+     
+          fail_on_error: true
+          
+     
