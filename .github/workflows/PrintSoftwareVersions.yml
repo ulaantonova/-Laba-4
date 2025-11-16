@@ -19,6 +19,8 @@ jobs:
      steps:
       - name: Print PostgresSQL Version
         run: psql --version
+      - name: Install DB Clients
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client mysql-client-core-8.0
       - name: Print MySQL Version
         run: mysql -V
       - name: Print MongoDB Version
